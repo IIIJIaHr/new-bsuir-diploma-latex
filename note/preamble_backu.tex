@@ -1,6 +1,6 @@
 % !TeX spellcheck = russian-aot-ieyo
 % Зачем: Определяет класс документа (То, как будет выглядеть документ)
-% Примечание: параметр draft помечает строки, вышедшие за границы страницы, прямоугольником, в финальной версии его нужно удалить.
+% Примечание: параметр draft помечает строки, вышедшие за границы страницы, прямоугольником, в фильной версии его нужно удалить.
 \documentclass[a4paper,14pt,russian,oneside,final]{extreport}
 
 % Зачем: Настройка Times New Roman.
@@ -10,13 +10,16 @@
 
 % Рекомендовано для Linux (нужен scalable-cyrfonts-tex, подробности см. в fonts_linux.tex)
 % раскомментировать, чтобы использовать:
-%\input{fonts_linux}% не забудьте закомментировать \input{fonts_windows}
+% \input{fonts_linux}% не забудьте закомментировать \input{fonts_windows}
 
 % Зачем: Установка кодировки исходных файлов.
 \usepackage[utf8]{inputenc}
 
 % Зачем: Делает результирующий PDF "searchable and copyable".
-% \usepackage{cmap}
+\usepackage{cmap}
+
+% Зачем: Чтобы можно было использовать русские буквы в формулах, но в случае использования предупреждать об этом.
+\usepackage[warn]{mathtext}
 
 % Зачем: Учет особенностей различных языков.
 \usepackage[russian]{babel}
@@ -40,10 +43,7 @@
 
 % Зачем: Настраивает отступы от границ страницы.
 % Почему: Пункт 2.1.2 Требований по оформлению пояснительной записки.
-% \usepackage[left=2.7cm,top=1.8cm,right=1.7cm,bottom=1.8cm]{geometry} % (1)
-\usepackage[left=3cm,top=2cm,right=1.5cm,bottom=2cm]{geometry} % (2) -- стандарт
-% \usepackage[left=2.7cm,top=1.3cm,right=1.2cm,bottom=1.2cm]{geometry} % (3)
-% \usepackage[left=2.8cm,top=1.3cm,right=1.0cm,bottom=1.0cm]{geometry} % (4) -- robocopy в 4 общаге
+\usepackage[left=3cm,top=2.0cm,right=1.5cm,bottom=2.7cm]{geometry}
 
 
 % Зачем: Настраивает межстрочный интервал, для размещения 40 +/- 3 строки текста на странице.
@@ -67,6 +67,7 @@
 % Примечание: в "Требованиях по оформлению пояснительной записки" не указано, как нужно делать, но в других БГУИРовских докуметах рекомендуется нумерация отдельная для каждой страницы
 \usepackage{perpage}
 \MakePerPage{footnote}
+
 
 % Зачем: Добавляет скобку 1) к номеру сноски
 % Почему: Пункты 2.9.2 и 2.9.1 Требований по оформлению пояснительной записки.
@@ -103,14 +104,6 @@
 \makeatletter
 \renewcommand{\l@section}{\@dottedtocline{1}{0.5em}{1.2em}}
 \renewcommand{\l@subsection}{\@dottedtocline{2}{1.7em}{2.0em}}
-\renewcommand{\l@subsubsection}{\@dottedtocline{3}{3.7em}{2.5em}}
-\makeatother
-
-\setcounter{tocdepth}{3}
-
-% Зачем: убираем переносы в содержании
-\makeatletter
-\renewcommand{\@tocrmarg}{\@pnumwidth plus1fil}
 \makeatother
 
 
@@ -128,7 +121,6 @@
 \fancypagestyle{plain}{ 
     \fancyhf{}
     \rfoot{\thepage}}
-\setlength{\footskip}{6mm}
 
 
 % Зачем: Задает стиль заголовков раздела жирным шрифтом, прописными буквами, без точки в конце
@@ -139,7 +131,7 @@
     {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\raggedright\hyphenpenalty=10000\normalfont\bfseries\MakeUppercase}}
+    {\raggedright\hyphenpenalty=10000\normalfont\large\bfseries\MakeUppercase}}
 \makeatother
 
 
@@ -148,20 +140,11 @@
 \makeatletter
 \renewcommand\subsection{%
   \@startsection{subsection}{2}%
-    {\fivecharsapprox\bfseries}%
+    {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\raggedright\hyphenpenalty=10000\normalfont\bfseries}}
+    {\raggedright\hyphenpenalty=10000\normalfont\normalsize\bfseries}}
 \makeatother
-% Полужирным и номер, и текст заголовка (если ваша кафедра не ПОИТ)
-% \makeatletter
-% \renewcommand\subsection{%
-  % \@startsection{subsection}{2}%
-    % {\fivecharsapprox}%
-    % {-1em \@plus -1ex \@minus -.2ex}%
-    % {1em \@plus .2ex}%
-    % {\raggedright\hyphenpenalty=10000\normalfont\normalsize\bfseries}}
-% \makeatother
 
 
 % Зачем: Задает стиль заголовков пунктов
@@ -169,10 +152,10 @@
 \makeatletter
 \renewcommand\subsubsection{
   \@startsection{subsubsection}{3}%
-    {\fivecharsapprox\bfseries}%
+    {\fivecharsapprox}%
     {-1em \@plus -1ex \@minus -.2ex}%
-    {1em \@plus .2ex}%
-    {\raggedright\hyphenpenalty=10000\normalfont\bfseries}}
+    {\z@}%
+    {\raggedright\hyphenpenalty=10000\normalfont\normalsize\bfseries}}
 \makeatother
 
 % Зачем: для оформления введения и заключения, они должны быть выровнены по центру.
@@ -183,7 +166,7 @@
     {\z@}%
     {-1em \@plus -1ex \@minus -.2ex}%
     {1em \@plus .2ex}%
-    {\centering\hyphenpenalty=10000\normalfont\bfseries\MakeUppercase}%
+    {\centering\hyphenpenalty=10000\normalfont\large\bfseries\MakeUppercase}%
     }
 \makeatother
 
@@ -197,11 +180,11 @@
 % Зачем: Пакет для вставки картинок
 % Примечание: Объяснение, зачем final - http://tex.stackexchange.com/questions/11004/why-does-the-image-not-appear
 \usepackage[final]{graphicx}
-\DeclareGraphicsExtensions{.pdf,.png,.jpg,.eps,.gif}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.eps}
 
 
 % Зачем: Директория в которой будет происходить поиск картинок
-\graphicspath{{attachments/}}
+\graphicspath{{figures/}}
 
 
 % Зачем: Добавление подписей к рисункам
@@ -211,14 +194,10 @@
 % Зачем: чтобы работала \No в новых латехах
 \DeclareRobustCommand{\No}{\ifmmode{\nfss@text{\textnumero}}\else\textnumero\fi}
 
-% зачем: sidewaysfigure для поворота рисунков
-\usepackage{rotating}
 % Зачем: поворот ячеек таблиц на 90 градусов
+\usepackage{rotating}
 \DeclareRobustCommand{\povernut}[1]{\begin{sideways}{#1}\end{sideways}}
 
-
-% Зачем: заставляем работать ссылки (\footnote) в таблицах
-\usepackage{tablefootnote}
 
 % Зачем: когда в формулах много кириллических символов команда \text{} занимает много места
 \DeclareRobustCommand{\x}[1]{\text{#1}}
@@ -227,19 +206,16 @@
 % Зачем: Задание подписей, разделителя и нумерации частей рисунков
 % Почему: Пункт 2.5.5 Требований по оформлению пояснительной записки.
 \DeclareCaptionLabelFormat{stbfigure}{Рисунок #2}
-\DeclareCaptionLabelFormat{stbsubfigure}{#2}
 \DeclareCaptionLabelFormat{stbtable}{Таблица #2}
 \DeclareCaptionLabelSeparator{stb}{~--~}
-\DeclareCaptionLabelSeparator{stbsubfiguresep}{)~}
 \captionsetup{labelsep=stb}
-\captionsetup[subfigure]{labelformat=stbsubfigure,labelsep=stbsubfiguresep}
-\captionsetup[figure]{labelformat=stbfigure,justification=centering,skip=15pt}
-\captionsetup[table]{labelformat=stbtable,justification=raggedright,format=hang,skip=0pt}
+\captionsetup[figure]{labelformat=stbfigure,justification=centering}
+\captionsetup[table]{labelformat=stbtable,justification=raggedright}
 \renewcommand{\thesubfigure}{\asbuk{subfigure}}
-
 
 % Зачем: Окружения для оформления формул
 % Почему: Пункт 2.4.7 требований по оформлению пояснительной записки и специфические требования различных кафедр
+% Пример использования смотри в course_content.tex, строка 5
 \usepackage{calc}
 \newlength{\lengthWordWhere}
 \settowidth{\lengthWordWhere}{где}
@@ -273,7 +249,6 @@
     { 
     \\[\parsep]
     \endtabularx
-    \vspace{-3mm} % костыль, вдруг понадобится после "где"-области убрать пустую строку
     }
 
 
@@ -291,10 +266,6 @@
 
 % Зачем: Окружения «теорема», «лемма»
 \usepackage{amsthm}
-
-
-% Зачем: Чтобы можно было использовать русские буквы в формулах, но в случае использования предупреждать об этом.
-\usepackage[warn]{mathtext}
 
 
 % Зачем: Производить арифметические операции во время компиляции TeX файла
@@ -326,7 +297,6 @@
 \setlist[itemize,0]{itemindent=\parindent + 2.2ex,leftmargin=0ex,label=--}
 \setlist[enumerate,1]{itemindent=\parindent + 2.7ex,leftmargin=0ex}
 \setlist[enumerate,2]{itemindent=\parindent + \parindent - 2.7ex}
-\setlist[enumerate,3]{itemindent=\parindent + \parindent - 2.7ex}
 
 % Зачем: Включение номера раздела в номер формулы. Нумерация формул внутри раздела.
 \AtBeginDocument{\numberwithin{equation}{section}}
@@ -410,73 +380,11 @@
   basicstyle=\footnotesize\ttfamily
 }
 
-\lstdefinestyle{python}{
-   xleftmargin=0ex,
-   language=Python,
-   basicstyle=\footnotesize\ttfamily,
-   breaklines=true,
-   columns=fullflexible
-}
-
-\lstdefinestyle{sql}{
-   xleftmargin=0ex,
-   language=SQL,
-   basicstyle=\footnotesize\ttfamily,
-   breaklines=true,
-   columns=fullflexible
-}
-
 \lstdefinestyle{csharpstyle}{
-   xleftmargin=0ex,
-   language=[Sharp]C,
-   basicstyle=\footnotesize\ttfamily,
-   breaklines=true,
-   columns=fullflexible
-}
+  language=[Sharp]C,
+  frame=lr,
+  rulecolor=\color{blue!80!black}}
 
-\definecolor{lightgray}{rgb}{.9,.9,.9}
-\definecolor{darkgray}{rgb}{.4,.4,.4}
-\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
-\definecolor{white}{rgb}{1, 1, 1}
-
-\lstdefinelanguage{JavaScript}{
-  keywords={break, case, catch, continue, debugger, default, delete, do, else, false, finally, for, function, if, in, instanceof, new, null, return, switch, this, throw, true, try, typeof, var, void, while, with},
-  morecomment=[l]{//},
-  morecomment=[s]{/*}{*/},
-  morestring=[b]',
-  morestring=[b]",
-  ndkeywords={class, export, boolean, throw, implements, import, this},
-  keywordstyle=\color{blue}\bfseries,
-  ndkeywordstyle=\color{darkgray}\bfseries,
-  identifierstyle=\color{black},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
-  sensitive=true
-}
-
-\lstdefinestyle{js}{
-   xleftmargin=0ex,
-   language=JavaScript,
-   basicstyle=\footnotesize\ttfamily,
-   breaklines=true,
-   columns=fullflexible
-}
-
-\lstset{
-   language=JavaScript,
-   backgroundcolor=\color{white},
-   extendedchars=true,
-   basicstyle=\small\ttfamily,
-   showstringspaces=false,
-   showspaces=false,
-   numbers=none,
-   numberstyle=\footnotesize,
-   numbersep=9pt,
-   tabsize=4,
-   breaklines=true,
-   showtabs=false,
-   captionpos=b
-}
 
 % Зачем: Нумерация листингов в пределах секции
 \AtBeginDocument{\numberwithin{lstlisting}{section}}
@@ -491,6 +399,7 @@
 \setlength{\bibsep}{0em}
 
 % Магия для подсчета разнообразных объектов в документе
+\usepackage{lastpage}
 \usepackage{totcount}
 \regtotcounter{section}
 
@@ -525,12 +434,16 @@
 \pretocmd{\section}{\addtocounter{totequation}{\value{equation}}\setcounter{equation}{0}}{}{}
 \pretocmd{\bibitem}{\addtocounter{totreferences}{1}}{}{}
 
-% Для оформления таблиц, не влазящих на 1 страницу
+
+
+% Для оформления таблиц не влязящих на 1 страницу
 \usepackage{longtable}
+
+% Для включения pdf документов в результирующий файл
+\usepackage{pdfpages}
 
 % Для использования знака градуса и других знаков
 % http://ctan.org/pkg/gensymb
-\usepackage{textcomp}
 \usepackage{gensymb}
 
 % Зачем: преобразовывать текст в верхний регистр командой MakeTextUppercase
@@ -559,24 +472,3 @@
    \fi
 }
 
-% Зачем: изменение ориентации отдельных страниц.
-% Использование:
-% \begin{landscape}
-% ...
-% \end{landscape}
-\usepackage{lscape}
-
-% Зачем: одноименную команду нужно писать в конце 
-% макросов, чтобы компенсировать съедаемый латехом
-% пробел (там где нужно).
-\usepackage{xspace}
-
-% Зачем: если таблица или рисунок находится на отдельной странице,
-% то они должны находиться у верхнего края листа.
-\makeatletter
-\setlength{\@fptop}{0pt}
-\setlength{\@fpbot}{0pt plus 1fil}
-\makeatother
-
-% Чтобы посчитать общее число страниц.
-\usepackage{lastpage,refcount}
